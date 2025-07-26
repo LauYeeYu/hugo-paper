@@ -147,6 +147,10 @@
     background-color: transparent;
     opacity: 1;
   }
+  figcaption {
+    text-align: center;
+    margin-top: -1.5em;
+  }
   :where(select:is([multiple], [size])) optgroup {
     font-weight: bolder;
   }
@@ -563,7 +567,7 @@
       color: var(--tw-prose-captions);
       font-size: 0.875em;
       line-height: 1.4285714;
-      margin-top: 0.8571429em;
+      /* margin-top: 0.8571429em; */
     }
     --tw-prose-body: oklch(0.373 0.034 259.733);
     --tw-prose-headings: oklch(0.21 0.034 264.665);
@@ -1808,4 +1812,75 @@ article {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Progressive image container */
+.progressive-container {
+  position: relative;
+  display: inline-block;
+}
+.progressive-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* Placeholder: blurred tiny image */
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+.placeholder.hiding {
+  opacity: 0;
+}
+.placeholder.hidden {
+  display: none;
+}
+/* Fullres fade-in */
+.fullres {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.fullres.loaded {
+  opacity: 1;
+}
+/* Hover zoom */
+.clickable-image {
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+.clickable-image:hover {
+  transform: scale(1.02);
+}
+.clickable-image.no-hover {
+  transition: none !important;
+}
+/* Fullscreen overlay */
+.image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: zoom-out;
+  transition: background 0.15s ease;
+  overflow: hidden;
+}
+.image-overlay.active {
+  background: rgba(0, 0, 0, 0.9);
+}
+/* Fullscreen expanding image */
+.expanding-image {
+  position: fixed;
+  z-index: 10000;
+  transition: all 0.15s ease;
+  will-change: transform, width, height, top, left;
+  cursor: zoom-out;
 }

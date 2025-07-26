@@ -1,0 +1,95 @@
+<!-- Scripts for Figure -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Progressive blur-up effect
+  document.querySelectorAll('.progressive-container').forEach(container => {
+    const fullImg = container.querySelector('.fullres');
+    const placeholder = container.querySelector('.placeholder');
+
+    function showFullImage() {
+      fullImg.classList.add('loaded');
+      if (placeholder) {
+        placeholder.classList.add('hiding');
+        setTimeout(() => {
+          placeholder.classList.add('hidden');
+        }, 600); // Match the CSS transition duration
+      }
+    }
+
+    fullImg.addEventListener('load', showFullImage);
+
+    // For cached or fast-loading images
+    if (fullImg.complete && fullImg.naturalWidth > 0) {
+      showFullImage();
+    }
+  });
+
+  // Fullscreen zoom effect
+  document.querySelectorAll('.clickable-image').forEach(img => {
+    img.addEventListener('click', function () {
+      const rect = img.getBoundingClientRect();
+
+      // Create overlay
+      const overlay = document.createElement('div');
+      overlay.className = 'image-overlay';
+      document.body.appendChild(overlay);
+
+      // Clone for fullscreen animation
+      const clone = img.cloneNode();
+      clone.className = 'expanding-image';
+      document.body.appendChild(clone);
+
+      // Set initial position and size
+      clone.style.top = rect.top + 'px';
+      clone.style.left = rect.left + 'px';
+      clone.style.width = rect.width + 'px';
+      clone.style.height = rect.height + 'px';
+
+      // Animate to fullscreen
+      requestAnimationFrame(() => {
+        overlay.classList.add('active');
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const scaleX = vw * 0.95 / rect.width;
+        const scaleY = vh * 0.95 / rect.height;
+        const scale = Math.min(scaleX, scaleY);
+        const newWidth = rect.width * scale;
+        const newHeight = rect.height * scale;
+        const newTop = (vh - newHeight) / 2;
+        const newLeft = (vw - newWidth) / 2;
+        clone.style.top = newTop + 'px';
+        clone.style.left = newLeft + 'px';
+        clone.style.width = newWidth + 'px';
+        clone.style.height = newHeight + 'px';
+      });
+
+      // Close function
+      function closeFullscreen() {
+        overlay.classList.remove('active');
+        img.classList.add('no-hover'); // Prevent hover glitch
+        clone.style.top = rect.top + 'px';
+        clone.style.left = rect.left + 'px';
+        clone.style.width = rect.width + 'px';
+        clone.style.height = rect.height + 'px';
+
+        setTimeout(() => {
+          overlay.remove();
+          clone.remove();
+          setTimeout(() => img.classList.remove('no-hover'), 50);
+        }, 150);
+      }
+
+      overlay.addEventListener('click', closeFullscreen);
+      clone.addEventListener('click', closeFullscreen);
+
+      // ESC key support
+      document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+          closeFullscreen();
+          document.removeEventListener('keydown', escHandler);
+        }
+      });
+    });
+  });
+});
+</script>
