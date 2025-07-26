@@ -6,6 +6,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
+    --font-sans-serif: 'SF Pro', 'Georgia', 'PT Serif', 'Times New Roman', Times, serif;
     --color-orange-500: oklch(0.705 0.213 47.604);
     --color-black: #000;
     --color-white: #fff;
@@ -35,7 +36,7 @@
     --animate-spin: spin 1s linear infinite;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --default-font-family: var(--font-sans);
+    --default-font-family: var(--font-sans-serif);
     --default-font-feature-settings: var(--font-sans--font-feature-settings);
     --default-font-variation-settings: var(
       --font-sans--font-variation-settings
@@ -867,6 +868,9 @@
   }
   .bg-black\/\[3\%\] {
     background-color: color-mix(in oklab, var(--color-black) 3%, transparent);
+  }
+  .bg-black\/\[10\%\] {
+    background-color: color-mix(in oklab, var(--color-black) 10%, transparent);
   }
   .bg-white {
     background-color: var(--color-white);
