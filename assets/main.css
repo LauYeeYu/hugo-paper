@@ -1935,6 +1935,18 @@ article {
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
   }
 }
+/* Apply offsets for cascade effect */
+.cover-card:nth-child(odd) {
+  transform: translateY(40px); /* Move odd cards down */
+}
+.cover-card:nth-child(even) {
+  transform: translateY(-10px); /* Move even cards up */
+}
+@media (max-width: 694px) {
+  .cover-card {
+    transform: none !important; /* Reset for smaller screens */
+  }
+}
 .full-width {
   grid-column: 1 / -1;
 }
