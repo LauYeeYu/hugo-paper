@@ -9,7 +9,7 @@
     {{- $title -}}
   </h2>
   {{- with .Params.description -}}
-    <p class="mt-1 plr-5 antialiased opacity-60 tight-line-height not-prose">{{- . -}}</p>
+    <p class="mt-1 plr-5 antialiased opacity-60 tight-line-height not-prose align-left">{{- . -}}</p>
   {{- end -}}
   <time class="mt-1 text-sm antialiased opacity-50 plr-5" datetime="{{- .Date | time.Format "2006-01-02" -}}"
     >{{- .Date | time.Format "2 Jan 2006" -}}</time>

@@ -6,7 +6,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --font-sans-serif: 'SF Pro', 'Georgia', 'PT Serif', 'Times New Roman', Times, serif;
+    --font-sans-serif: 'SF Pro', 'Georgia', 'PT Serif', 'Times New Roman', Times, Source Han Serif SC, serif;
     --color-orange-500: oklch(0.705 0.213 47.604);
     --color-black: #000;
     --color-white: #fff;
@@ -28,6 +28,7 @@
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
+    --font-weight-bold: 700;
     --tracking-wider: 0.05em;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
@@ -384,7 +385,7 @@
     :where(h1):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: var(--tw-prose-headings);
       font-weight: 800;
-      font-size: 2.25em;
+      font-size: 1.8em;
       margin-top: 0;
       margin-bottom: 0.8888889em;
       line-height: 1.1111111;
@@ -396,7 +397,7 @@
     :where(h2):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
       color: var(--tw-prose-headings);
       font-weight: 700;
-      font-size: 1.5em;
+      font-size: 1.4em;
       margin-top: 2em;
       margin-bottom: 1em;
       line-height: 1.3333333;
@@ -716,6 +717,9 @@
   }
   .mr-auto {
     margin-right: auto;
+  }
+  .mb-0 {
+    margin-bottom: calc(var(--spacing) * 0);
   }
   .mb-1 {
     margin-bottom: calc(var(--spacing) * 1);
@@ -1462,8 +1466,8 @@ body {
   }
 }
 h1, h2, h3 {
-  --tw-font-weight: var(--font-weight-semibold);
-  font-weight: var(--font-weight-semibold);
+  --tw-font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 pre {
   direction: ltr;
@@ -1937,10 +1941,10 @@ article {
 }
 /* Apply offsets for cascade effect */
 .cover-card:nth-child(odd) {
-  transform: translateY(40px); /* Move odd cards down */
+  transform: translateY(-10px); /* Move odd cards down */
 }
 .cover-card:nth-child(even) {
-  transform: translateY(-10px); /* Move even cards up */
+  transform: translateY(40px); /* Move even cards up */
 }
 @media (max-width: 694px) {
   .cover-card {
@@ -1979,4 +1983,12 @@ article {
   .bilibili-video {
     height: 600px;
   }
+}
+@media (width >= 40rem) {
+  p {
+    text-align: justify;
+  }
+}
+.align-left {
+  text-align: left;
 }

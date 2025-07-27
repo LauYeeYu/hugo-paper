@@ -2,10 +2,10 @@
 {{ if $img }}
   {{ $placeholder := $img.Resize "400x" | images.Filter (images.GaussianBlur 6) }}
   {{ $full := $img }}
-  <figure class="image-wrapper">
+  <figure class="image-wrapper mt-0 mb-0">
     <div class="progressive-container">
-      <img src="{{ $placeholder.RelPermalink }}" width="{{ $placeholder.Width }}" height="{{ $placeholder.Height }}" alt="{{ .Text }}" class="placeholder" />
-      <img src="{{ $full.RelPermalink }}" width="{{ $full.Width }}" height="{{ $full.Height }}" alt="{{ .Text }}" class="fullres clickable-image" loading="lazy" />
+      <img src="{{ $placeholder.RelPermalink }}" width="{{ $placeholder.Width }}" height="{{ $placeholder.Height }}" alt="{{ .Text }}" class="placeholder mt-3" />
+      <img src="{{ $full.RelPermalink }}" width="{{ $full.Width }}" height="{{ $full.Height }}" alt="{{ .Text }}" class="fullres clickable-image mt-3" loading="lazy" />
     {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
     </div>
   </figure>
