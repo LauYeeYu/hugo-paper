@@ -11,6 +11,8 @@
 {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections -}}<!---->
 {{- end -}}
 
+<div class="cards-container">
+
 <!-- Articles -->
 {{- $paginator := .Paginate $pages -}} {{- range $index, $page :=
 $paginator.Pages -}}<!---->
@@ -20,7 +22,7 @@ $paginator.Pages -}}<!---->
 
 {{- $avatar_url := $.Scratch.Get "avatar_url" -}}<!---->
 {{- if or $avatar_url site.Params.name -}}
-<div class="-mt-2 mb-12 flex items-center">
+<div class="-mt-2 mb-12 flex items-center full-width">
   {{- if $avatar_url -}}
   <div
     class="h-24 w-24 shrink-0 rounded-full border-[0.5px] border-black/10 bg-white/50 p-3 ltr:mr-5 ltr:-ml-1 rtl:-mr-1 rtl:ml-5 dark:bg-white/90!"
@@ -48,21 +50,11 @@ $paginator.Pages -}}<!---->
 
 {{- end -}}
 
-<section class="relative my-10 first-of-type:mt-0 last-of-type:mb-0">
-  {{- if gt .Weight 0 -}}
-  <span class="mb-1 inline-block text-xs tracking-wider text-orange-500"
-    >Featured</span
-  >
-  {{- end -}}
-  <h2 class="my-0!">{{- .Title -}}</h2>
-  <time class="text-xs antialiased opacity-60"
-    >{{- .Date | time.Format ":date_medium" -}}</time
-  >
-  <a class="absolute inset-0 text-[0px]" href="{{- .Permalink -}}"
-    >{{- .Title -}}</a
-  >
+<section class="relative my-10 first-of-type:mt-0 last-of-type:mb-0 cover-card">
+{{- partial "cover-card.html" . }} 
 </section>
 {{- end -}}
+</div>
 
 <!-- Main Nav -->
 {{- if gt $paginator.TotalPages 1 -}}

@@ -1,0 +1,17 @@
+{{ $title := .Title }}
+{{ $link := .Permalink }}
+<a href="{{- .Permalink -}}" class="no-underline [&>*:hover]:bg-black/[10%]">
+<div class="rounded-xl bg-black/[5%] pb-2">
+  {{- with .Params.cover -}}
+    <img class="rounded-xl not-prose" src="{{- $link -}}{{ . }}" width="2000" height="1000" alt="{{- $title -}}" />
+  {{ end -}}
+  <h2 class="pt-2 mt-0 mb-1 plr-5 opacity-80 regular-weight">
+    {{- $title -}}
+  </h2>
+  {{- with .Params.description -}}
+    <p class="mt-1 plr-5 antialiased opacity-60 tight-line-height not-prose">{{- . -}}</p>
+  {{- end -}}
+  <time class="mt-1 text-sm antialiased opacity-50 plr-5" datetime="{{- .Date | time.Format "2006-01-02" -}}"
+    >{{- .Date | time.Format "2 Jan 2006" -}}</time>
+</div>
+</a>
