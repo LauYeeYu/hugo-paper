@@ -1944,3 +1944,27 @@ article {
 .regular-weight {
   font-weight: var(--font-weight-normal);
 }
+.bilibili-video {
+  width: 100%;
+  height: 200px;
+}
+@media (width >= 32rem) {
+  .bilibili-video {
+    height: 300px;
+  }
+}
+@media (width >= 48rem) {
+  .bilibili-video {
+    height: 400px;
+  }
+}
+@media (width >= 56rem) {
+  .bilibili-video {
+    height: 500px;
+  }
+}
+@media (width >= 64rem) {
+  .bilibili-video {
+    height: 600px;
+  }
+}
