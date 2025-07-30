@@ -11,7 +11,6 @@
 {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections -}}<!---->
 {{- end -}}
 
-<div class="cards-container">
 
 <!-- Articles -->
 {{- $paginator := .Paginate $pages -}} {{- range $index, $page :=
@@ -46,13 +45,11 @@ $paginator.Pages -}}<!---->
   </div>
   {{- end -}}
 </div>
-<!-- hack for odd and even cards -->
-<div></div>
-{{- end -}}<!---->
+{{- end -}}
+{{- end -}}
 
-{{- else if eq $index 0 -}}
-<!-- hack for ensuring all cards are half width when the screen is wide -->
-<div></div><div></div>
+{{- if eq $index 0 -}}
+<div class="cards-container">
 {{- end -}}
 
 <section class="relative first-of-type:mt-0 last-of-type:mb-0 cover-card">
