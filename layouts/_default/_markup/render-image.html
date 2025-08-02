@@ -1,6 +1,11 @@
 {{ $img := .Page.Resources.GetMatch (printf "*%s*" .Destination) }}
 {{ if $img }}
-  {{ $placeholder := $img.Resize "400x" | images.Filter (images.GaussianBlur 6) }}
+  {{ $placeholderName := replace $img.Name ".webp" "-placeholder.webp" }}
+  {{ $placeholder := .Page.Resources.GetMatch (printf "*%s" $placeholderName) }}
+
+  {{ if not $placeholder }}
+    {{ $placeholder = $img.Resize "400x" | images.Filter (images.GaussianBlur 6) }}
+  {{ end }}
   {{ $full := $img }}
   <figure class="image-wrapper mt-0 mb-0 full-width">
     <div class="progressive-container full-width">
