@@ -1952,7 +1952,7 @@ article {
   }
 }
 .full-width {
-  grid-column: 1 / -1;
+  width: 100%;
 }
 .tight-line-height {
   line-height: 1.2;
