@@ -9,7 +9,7 @@
   {{ $full := $img }}
   <figure id="{{ $img.Name | plainify }}" class="image-wrapper mt-0 mb-0 full-width">
     <div class="progressive-container full-width">
-      <img src="{{ $placeholder.RelPermalink }}" width="{{ $placeholder.Width }}" height="{{ $placeholder.Height }}" alt="{{ .Text }}" class="placeholder mt-3 full-width" />
+      <img src="{{ $placeholder.RelPermalink }}" width="{{ $placeholder.Width }}" height="{{ $placeholder.Height }}" alt="{{ .Text }}" class="placeholder mt-3 full-width" loading="eager" />
       <img src="{{ $full.RelPermalink }}" width="{{ $full.Width }}" height="{{ $full.Height }}" alt="{{ .Text }}" class="fullres clickable-image mt-3 full-width" />
     {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
     </div>
