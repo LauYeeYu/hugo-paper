@@ -1,6 +1,6 @@
 {{ $title := .Title }}
-{{ $link := .Permalink }}
-<a href="{{- .Permalink -}}" class="no-underline [&>*:hover]:bg-black/[10%]">
+{{ $link := .RelPermalink }}
+<a href="{{- $link -}}" class="no-underline [&>*:hover]:bg-black/[10%]">
 <div class="rounded-xl bg-black/[5%] pb-2">
   {{- with .Params.cover -}}
     <img class="rounded-xl not-prose" src="{{- $link -}}{{ . }}" width="2000" height="1000" alt="{{- $title -}}" />
