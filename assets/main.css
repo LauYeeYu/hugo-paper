@@ -1988,6 +1988,9 @@ article {
   p {
     text-align: justify;
   }
+  li {
+    text-align: justify;
+  }
 }
 .align-left {
   text-align: left;
