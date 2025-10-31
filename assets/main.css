@@ -1,4 +1,13 @@
 /*! tailwindcss v4.0.12 | MIT License | https://tailwindcss.com */
+
+@font-face {
+  font-family: 'MyCustomChineseFont';
+  src: url('/fonts/chinese-font.woff2?v=20251031') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -6,7 +15,7 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --font-sans-serif: 'SF Pro', 'Georgia', 'PT Serif', 'Times New Roman', Times, Source Han Serif SC, serif;
+    --font-sans-serif: 'Libertinus Serif', MyCustomChineseFont, serif;
     --color-orange-500: oklch(0.705 0.213 47.604);
     --color-black: #000;
     --color-white: #fff;
@@ -17,19 +26,20 @@
     --text-sm--line-height: calc(1.25 / 0.875);
     --text-base: 1rem;
     --text-base--line-height: calc(1.5 / 1);
-    --text-lg: 1.125rem;
-    --text-lg--line-height: calc(1.75 / 1.125);
-    --text-xl: 1.25rem;
-    --text-xl--line-height: calc(1.75 / 1.25);
-    --text-2xl: 1.5rem;
-    --text-2xl--line-height: calc(2 / 1.5);
+    --text-lg: 1.25rem;
+    --text-lg--line-height: calc(2 / 1.25);
+    --text-xl: 1.5rem;
+    --text-xl--line-height: calc(2 / 1.5);
+    --text-2xl: 1.75rem;
+    --text-2xl--line-height: calc(2 / 1.75);
     --text-9xl: 8rem;
     --text-9xl--line-height: 1;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
-    --font-weight-bold: 700;
+    --font-weight-bold: 900;
     --tracking-wider: 0.05em;
+    --tracking-tight: -0.015em;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
@@ -50,6 +60,7 @@
       --font-mono--font-variation-settings
     );
     --w: calc(680px + 128px * 2);
+    --default-letter-spacing: var(--tracking-tight);
   }
 }
 @layer base {
@@ -70,6 +81,7 @@
   }
   body {
     line-height: inherit;
+    letter-spacing: var(--default-letter-spacing);
   }
   hr {
     height: 0;
@@ -1476,7 +1488,7 @@ article {
   font-size: var(--text-lg);
   line-height: var(--tw-leading, var(--text-lg--line-height));
   --tw-leading: 1.8;
-  line-height: 1.8;
+  line-height: var(--text-lg--line-height);
   color: var(--color-black);
   &:where(.dark, .dark *) {
     color: var(--color-white);
