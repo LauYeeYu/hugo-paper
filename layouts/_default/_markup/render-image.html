@@ -1,20 +1,74 @@
+{{/* 1. Get the original image resource. */}}
 {{ $img := .Page.Resources.GetMatch (printf "*%s*" .Destination) }}
+
 {{ if $img }}
-  {{ $placeholderName := replace $img.Name ".webp" "-placeholder.webp" }}
-  {{ $placeholder := .Page.Resources.GetMatch (printf "*%s" $placeholderName) }}
+  {{/* 2. Define basename */}}
+  {{ $basename := strings.TrimSuffix (path.Ext $img.Name) $img.Name }}
+
+  {{/* 3. NEW LOGIC: Determine AVIF, WEBP, and Placeholder Source */}}
+  {{ $placeholder_source := $img }} {{/* Default: use $img to gen placeholder */}}
+  {{ $webp := $img }}               {{/* Default: $img is the webp */}}
+  {{ $avif := "" }}                {{/* Default: no avif */}}
+
+  {{ if eq (path.Ext $img.Name) ".avif" }}
+    {{/* The image is AVIF. Find the WEBP fallback. */}}
+    {{ $avif = $img }}
+    {{ $webpName := printf "%s.webp" $basename }}
+    {{ $webp_fallback := .Page.Resources.GetMatch $webpName }}
+    
+    {{ if $webp_fallback }}
+      {{ $placeholder_source = $webp_fallback }} {{/* Use WEBP for placeholder */}}
+      {{ $webp = $webp_fallback }}
+    {{ else }}
+      {{/* No WEBP found. Must use AVIF for placeholder & fallback */}}
+      {{ $placeholder_source = $avif }}
+      {{ $webp = "" }} {{/* Set to empty so it's not used as fallback */}}
+    {{ end }}
+  {{ end }}
+
+  {{/* 4. Placeholder Logic (now uses the correct source) */}}
+  {{ $placeholderName := printf "%s-placeholder.webp" $basename }}
+  {{ $placeholder := .Page.Resources.GetMatch $placeholderName }}
 
   {{ if not $placeholder }}
-    {{ $placeholder = $img.Resize "400x" | images.Filter (images.GaussianBlur 6) }}
+    {{/* Create placeholder from $placeholder_source (which is the .webp if it exists) */}}
+    {{ $placeholder = $placeholder_source.Resize "400x" | images.Filter (images.GaussianBlur 6) }}
   {{ end }}
-  {{ $full := $img }}
+
+  {{/* 5. Render the HTML structure */}}
   <figure id="{{ $img.Name | plainify }}" class="image-wrapper mt-0 mb-0 full-width">
     <div class="progressive-container full-width">
+      
+      {{/* The placeholder image, loaded first */}}
       <img src="{{ $placeholder.RelPermalink }}" width="{{ $placeholder.Width }}" height="{{ $placeholder.Height }}" alt="{{ .Text }}" class="placeholder mt-3 full-width" loading="eager" />
-      <img src="{{ $full.RelPermalink }}" width="{{ $full.Width }}" height="{{ $full.Height }}" alt="{{ .Text }}" class="fullres clickable-image mt-3 full-width" />
-    {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
+
+      {{/* 6. Render final image logic */}}
+      {{ if $avif }}
+        {{/* IT WAS AVIF: Use <picture> */}}
+        <picture style="margin-top:0;">
+          <source srcset="{{ $avif.RelPermalink }}" type="image/avif" />
+          {{ if $webp }}
+            <source srcset="{{ $webp.RelPermalink }}" type="image/webp" />
+          {{ end }}
+          
+          {{/* Fallback <img> is required. Use .webp if it exists. */}}
+          {{ $fallbackImg := $avif }}
+          {{ if $webp }}
+            {{ $fallbackImg = $webp }}
+          {{ end }}
+          <img src="{{ $fallbackImg.RelPermalink }}" width="{{ $fallbackImg.Width }}" height="{{ $fallbackImg.Height }}" alt="{{ .Text }}" class="fullres clickable-image mt-3 full-width" data-fullres-src="{{ $img.RelPermalink }}" />
+        </picture>
+
+      {{ else }}
+        {{/* IT WAS NOT AVIF: Render directly (it's the .webp) */}}
+        <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ .Text }}" class="fullres clickable-image mt-3 full-width" />
+      {{ end }}
+      
+      {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
     </div>
   </figure>
+
 {{ else }}
-  <!-- Fallback if image is not a Page Resource -->
+  {{/* Fallback if image is not a Page Resource (unchanged) */}}
   <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" class="clickable-image" loading="lazy" />
 {{ end }}

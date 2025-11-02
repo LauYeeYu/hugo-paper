@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Clone for fullscreen animation
       const clone = img.cloneNode();
+      // Use the high-res 'data-fullres-src' for the clone,
+      // falling back to the original src if it's not set.
+      clone.src = img.dataset.fullresSrc || img.src;
       clone.className = 'expanding-image';
       document.body.appendChild(clone);
 
