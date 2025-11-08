@@ -1949,6 +1949,18 @@ article {
   grid-auto-flow: dense;
   gap: 1rem;
 }
+
+.card-link > .card-content {
+  background-color: rgba(0, 0, 0, 0.05);
+  transition-property: background-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.card-link:hover > .card-content {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
 @media (width >= 64rem) {
   .cards-container {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
