@@ -1,10 +1,15 @@
-<!-- Scripts for Figure -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+// Scripts for Figures
+function initFigureScripts() {
   // Progressive blur-up effect
   document.querySelectorAll('.progressive-container').forEach(container => {
     const fullImg = container.querySelector('.fullres');
     const placeholder = container.querySelector('.placeholder');
+
+    if (placeholder) {
+      // Make placeholder visible for JS-enabled browsers
+      placeholder.classList.add('js-visible');
+    }
 
     function showFullImage() {
       fullImg.classList.add('loaded');
@@ -26,73 +31,141 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Fullscreen zoom effect
   document.querySelectorAll('.clickable-image').forEach(img => {
-    img.addEventListener('click', function () {
-      const rect = img.getBoundingClientRect();
+    img.addEventListener('click', handleImageClick);
+  });
+}
 
-      // Create overlay
-      const overlay = document.createElement('div');
-      overlay.className = 'image-overlay';
-      document.body.appendChild(overlay);
+document.addEventListener('DOMContentLoaded', function () {
+  const mainContent = document.querySelector('main');
+  if (!mainContent) return;
 
-      // Clone for fullscreen animation
-      const clone = img.cloneNode();
-      // Use the high-res 'data-fullres-src' for the clone,
-      // falling back to the original src if it's not set.
-      clone.src = img.dataset.fullresSrc || img.src;
-      clone.className = 'expanding-image';
-      document.body.appendChild(clone);
+  // Initially fade in the content
+  mainContent.classList.remove('page-transition');
+  initFigureScripts(); // Run scripts for initial content
 
-      // Set initial position and size
-      clone.style.top = rect.top + 'px';
-      clone.style.left = rect.left + 'px';
-      clone.style.width = rect.width + 'px';
-      clone.style.height = rect.height + 'px';
+  const handleLinkClick = (e) => {
+    const link = e.target.closest('a');
 
-      // Animate to fullscreen
-      requestAnimationFrame(() => {
-        overlay.classList.add('active');
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        const scaleX = vw * 0.95 / rect.width;
-        const scaleY = vh * 0.95 / rect.height;
-        const scale = Math.min(scaleX, scaleY);
-        const newWidth = rect.width * scale;
-        const newHeight = rect.height * scale;
-        const newTop = (vh - newHeight) / 2;
-        const newLeft = (vw - newWidth) / 2;
-        clone.style.top = newTop + 'px';
-        clone.style.left = newLeft + 'px';
-        clone.style.width = newWidth + 'px';
-        clone.style.height = newHeight + 'px';
-      });
+    // Check if it's a valid, internal link
+    if (
+      !link ||
+      link.target === '_blank' ||
+      link.hasAttribute('download') ||
+      link.href.includes('#') ||
+      !link.href.startsWith(window.location.origin)
+    ) {
+      return;
+    }
 
-      // Close function
-      function closeFullscreen() {
-        overlay.classList.remove('active');
-        img.classList.add('no-hover'); // Prevent hover glitch
-        clone.style.top = rect.top + 'px';
-        clone.style.left = rect.left + 'px';
-        clone.style.width = rect.width + 'px';
-        clone.style.height = rect.height + 'px';
+    e.preventDefault();
+    const destination = link.href;
 
-        setTimeout(() => {
-          overlay.remove();
-          clone.remove();
-          setTimeout(() => img.classList.remove('no-hover'), 50);
-        }, 150);
-      }
+    // Fade out current content
+    mainContent.classList.add('page-transition');
 
-      overlay.addEventListener('click', closeFullscreen);
-      clone.addEventListener('click', closeFullscreen);
+    setTimeout(() => {
+      fetch(destination)
+        .then((response) => response.text())
+        .then((html) => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
 
-      // ESC key support
-      document.addEventListener('keydown', function escHandler(e) {
-        if (e.key === 'Escape') {
-          closeFullscreen();
-          document.removeEventListener('keydown', escHandler);
-        }
-      });
-    });
+          // Replace title and main content
+          document.title = doc.title;
+          mainContent.innerHTML = doc.querySelector('main').innerHTML;
+
+          // Update URL and history
+          window.history.pushState({}, '', destination);
+
+          // Fade in new content
+          mainContent.classList.remove('page-transition');
+          window.scrollTo(0, 0); // Scroll to top
+          initFigureScripts(); // Re-run scripts for new content
+        })
+        .catch((err) => {
+          console.error('Failed to fetch page: ', err);
+          // If fetch fails, navigate normally
+          window.location.href = destination;
+        });
+    }, 300); // Match CSS transition duration
+  };
+
+  document.body.addEventListener('click', handleLinkClick);
+
+  // Handle browser back/forward navigation
+  window.addEventListener('popstate', () => {
+    mainContent.classList.add('page-transition');
+    setTimeout(() => {
+      window.location.reload(); // Simple reload for back/forward
+    }, 300);
   });
 });
+
+// Handler for the image click, now a named function to avoid re-declaration issues.
+function handleImageClick() {
+  const img = this;
+  const rect = img.getBoundingClientRect();
+
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.className = 'image-overlay';
+  document.body.appendChild(overlay);
+
+  // Clone for fullscreen animation
+  const clone = img.cloneNode();
+  clone.src = img.dataset.fullresSrc || img.src;
+  clone.className = 'expanding-image';
+  document.body.appendChild(clone);
+
+  // Set initial position and size
+  clone.style.top = rect.top + 'px';
+  clone.style.left = rect.left + 'px';
+  clone.style.width = rect.width + 'px';
+  clone.style.height = rect.height + 'px';
+
+  // Animate to fullscreen
+  requestAnimationFrame(() => {
+    overlay.classList.add('active');
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const scaleX = vw * 0.95 / rect.width;
+    const scaleY = vh * 0.95 / rect.height;
+    const scale = Math.min(scaleX, scaleY);
+    const newWidth = rect.width * scale;
+    const newHeight = rect.height * scale;
+    const newTop = (vh - newHeight) / 2;
+    const newLeft = (vw - newWidth) / 2;
+    clone.style.top = newTop + 'px';
+    clone.style.left = newLeft + 'px';
+    clone.style.width = newWidth + 'px';
+    clone.style.height = newHeight + 'px';
+  });
+
+  // Close function
+  function closeFullscreen() {
+    overlay.classList.remove('active');
+    img.classList.add('no-hover'); // Prevent hover glitch
+    clone.style.top = rect.top + 'px';
+    clone.style.left = rect.left + 'px';
+    clone.style.width = rect.width + 'px';
+    clone.style.height = rect.height + 'px';
+
+    setTimeout(() => {
+      overlay.remove();
+      clone.remove();
+      setTimeout(() => img.classList.remove('no-hover'), 50);
+    }, 150);
+  }
+
+  overlay.addEventListener('click', closeFullscreen);
+  clone.addEventListener('click', closeFullscreen);
+
+  // ESC key support
+  document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') {
+      closeFullscreen();
+      document.removeEventListener('keydown', escHandler);
+    }
+  });
+}
 </script>
