@@ -39,6 +39,10 @@
   <!---->
   {{- $css := slice $main $custom | resources.Concat "main.css" | minify -}}
   <link rel="preload stylesheet" as="style" href="{{- $css.Permalink -}}" />
+  <!-- print -->
+  {{- $print := resources.Get "print.css" | minify -}}
+  <link rel="preload stylesheet" as="style" href="{{- $print.Permalink -}}" media="print" />
+  <!---->
 
   <!-- dark icon -->
   <!-- {{- $dark_icon := "theme.png" -}} -->

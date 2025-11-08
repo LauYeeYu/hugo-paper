@@ -1,0 +1,13 @@
+@media print {
+  :root {
+    color-scheme: light !important;
+  }
+
+  #top-bar, nav {
+    display: none !important;
+  }
+
+  body, main {
+    overflow: visible !important;
+  }
+}
