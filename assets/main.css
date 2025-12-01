@@ -2,8 +2,16 @@
 
 @font-face {
   font-family: 'MyCustomChineseFont';
-  src: url('/fonts/chinese-font.woff2?v=20251031') format('woff2');
-  font-weight: normal;
+  src: url('/fonts/chinese-font-regular.woff2?v=20251031') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MyCustomChineseFont';
+  src: url('/fonts/chinese-font-bold.woff2?v=20251031') format('woff2');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
