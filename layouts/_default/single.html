@@ -12,7 +12,7 @@
       {{- if .Date -}}
       <time datetime="{{- .Date | time.Format "2006-01-02" -}}">{{- .Date | time.Format "2 January 2006" -}}</time>
       {{- end -}}<!---->
-      {{- $single_author := or .Params.Author site.Author.name -}}
+      {{- $single_author := or .Params.Author site.Params.author -}}
       <!---->
       {{- if $single_author -}}
       <span class="mx-1">&middot;</span>
